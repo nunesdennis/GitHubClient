@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  GitHubClient
+
+  Created by Dennis Nunes on 25/04/23.
+  
+*/
+
+// MARK: - General
+"General.Alert.title" = "Atenção";
+"General.Alert.Button.title" = "Ok";
+
+// MARK: - Matches
+"Users.Navigation.title" = "Usuários";
