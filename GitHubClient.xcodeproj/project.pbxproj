@@ -38,6 +38,9 @@
 		B3E73DAB2A37977C00259933 /* UserDetailsFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E73DAA2A37977C00259933 /* UserDetailsFactory.swift */; };
 		B3E73DB12A37992100259933 /* UserDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E73DB02A37992100259933 /* UserDetailsViewModel.swift */; };
 		B3E73DB42A379AF600259933 /* UserDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3E73DB32A379AF600259933 /* UserDetailsViewController.swift */; };
+		B3F5D3FC2A3A1F0800666565 /* RepositoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F5D3FB2A3A1F0800666565 /* RepositoryModel.swift */; };
+		B3F5D3FE2A3A261100666565 /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F5D3FD2A3A261100666565 /* BaseService.swift */; };
+		B3F5D4022A3A286900666565 /* RepositoriesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3F5D4012A3A286900666565 /* RepositoriesService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +96,9 @@
 		B3E73DAA2A37977C00259933 /* UserDetailsFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsFactory.swift; sourceTree = "<group>"; };
 		B3E73DB02A37992100259933 /* UserDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewModel.swift; sourceTree = "<group>"; };
 		B3E73DB32A379AF600259933 /* UserDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetailsViewController.swift; sourceTree = "<group>"; };
+		B3F5D3FB2A3A1F0800666565 /* RepositoryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryModel.swift; sourceTree = "<group>"; };
+		B3F5D3FD2A3A261100666565 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
+		B3F5D4012A3A286900666565 /* RepositoriesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoriesService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,6 +214,7 @@
 		B301DD6929F845DC00F38340 /* Users */ = {
 			isa = PBXGroup;
 			children = (
+				B3F5D3FF2A3A283100666565 /* Service */,
 				B301DD6E29F8460500F38340 /* Views */,
 				B301DD6D29F845FF00F38340 /* ViewModels */,
 				B301DD6A29F845E900F38340 /* Factory */,
@@ -227,7 +234,7 @@
 			isa = PBXGroup;
 			children = (
 				B301DD7429F846E700F38340 /* UsersEndpoint.swift */,
-				B301DD7829F8489F00F38340 /* UsersService.swift */,
+				B3F5D3FD2A3A261100666565 /* BaseService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -243,7 +250,6 @@
 		B301DD6D29F845FF00F38340 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				B301DD8B29F84EC300F38340 /* CardViewModels.swift */,
 				B301DD9229F852D300F38340 /* UsersViewModel.swift */,
 			);
 			path = ViewModels;
@@ -254,7 +260,6 @@
 			children = (
 				B301DD7E29F84A7B00F38340 /* UsersViewController.swift */,
 				B301DD8429F84CF200F38340 /* UserCell.swift */,
-				B301DD8629F84D6300F38340 /* CardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,6 +301,8 @@
 		B3E73DAC2A37983F00259933 /* UserDetails */ = {
 			isa = PBXGroup;
 			children = (
+				B3F5D4002A3A285700666565 /* Service */,
+				B3F5D3FA2A3A1EF600666565 /* Models */,
 				B3E73DB22A379AE800259933 /* Views */,
 				B3E73DAF2A37991200259933 /* ViewModels */,
 				B3E73DAD2A37984C00259933 /* Factory */,
@@ -314,6 +321,8 @@
 		B3E73DAE2A37985C00259933 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				B3F5D3F92A38EE7D00666565 /* ViewModels */,
+				B3F5D3F82A38EE6700666565 /* Views */,
 				B301DD6F29F8461900F38340 /* Coordinator */,
 				B301DD6C29F845FA00F38340 /* Models */,
 				B301DD6B29F845F100F38340 /* Service */,
@@ -335,6 +344,46 @@
 				B3E73DB32A379AF600259933 /* UserDetailsViewController.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B3F5D3F82A38EE6700666565 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B301DD8629F84D6300F38340 /* CardView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B3F5D3F92A38EE7D00666565 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				B301DD8B29F84EC300F38340 /* CardViewModels.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		B3F5D3FA2A3A1EF600666565 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B3F5D3FB2A3A1F0800666565 /* RepositoryModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		B3F5D3FF2A3A283100666565 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				B301DD7829F8489F00F38340 /* UsersService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		B3F5D4002A3A285700666565 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				B3F5D4012A3A286900666565 /* RepositoriesService.swift */,
+			);
+			path = Service;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -485,14 +534,17 @@
 				B318BBF229F85ACE001957AA /* Colors.swift in Sources */,
 				B3E73DB12A37992100259933 /* UserDetailsViewModel.swift in Sources */,
 				B301DD8529F84CF200F38340 /* UserCell.swift in Sources */,
+				B3F5D3FE2A3A261100666565 /* BaseService.swift in Sources */,
 				B301DD6729F8459800F38340 /* Coordinator.swift in Sources */,
 				B301DD3329F8414000F38340 /* AppDelegate.swift in Sources */,
 				B301DD7329F846A100F38340 /* UsersFactory.swift in Sources */,
 				B301DD7929F8489F00F38340 /* UsersService.swift in Sources */,
 				B301DD7D29F849C700F38340 /* UserModel.swift in Sources */,
 				B318BBF029F85AB6001957AA /* UIColor+Extensions.swift in Sources */,
+				B3F5D3FC2A3A1F0800666565 /* RepositoryModel.swift in Sources */,
 				B301DD8729F84D6300F38340 /* CardView.swift in Sources */,
 				B301DD3529F8414000F38340 /* SceneDelegate.swift in Sources */,
+				B3F5D4022A3A286900666565 /* RepositoriesService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

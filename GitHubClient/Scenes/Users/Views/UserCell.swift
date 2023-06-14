@@ -15,7 +15,7 @@ final class UserCell: UITableViewCell {
         return CardView(with: viewModel)
     }
     
-    // MARK: - Public Methods
+    // MARK: - Methods
 
     func setupView(with viewModel: CardViewModel){
         self.viewModel = viewModel

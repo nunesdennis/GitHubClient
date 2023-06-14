@@ -1,9 +1,14 @@
 import UIKit
 
 final class CardView: UIView {
+    // MARK: - Constants
+    
+    let cornerRadius: CGFloat = 16
+    
     // MARK: - Properties
     
     var viewModel: CardViewModel
+    let isFullSize: Bool
     
     // MARK: - Subviews
     
@@ -22,11 +27,13 @@ final class CardView: UIView {
     }()
     
     private lazy var usernameLabel: UILabel = {
+        let fontSize = isFullSize ? Space.base15 : Space.base10
         let label = UILabel()
         label.text = viewModel.username
         label.textColor = .darkGray
-        label.textAlignment = .left
+        label.textAlignment = textAlignment
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.systemFont(ofSize: fontSize)
         
         return label
     }()
@@ -35,16 +42,29 @@ final class CardView: UIView {
         let stackView = UIStackView(arrangedSubviews: [avatarImage, usernameLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.spacing = Space.base10
-        stackView.axis = .horizontal
-        stackView.alignment = .leading
+        stackView.axis = stackViewAlix
+        stackView.alignment = stackViewAlignment
         
         return stackView
     }()
+    
+    private var textAlignment: NSTextAlignment {
+        isFullSize ? .center : .left
+    }
+    
+    private var stackViewAlix: NSLayoutConstraint.Axis {
+        isFullSize ? .vertical : .horizontal
+    }
+    
+    private var stackViewAlignment: UIStackView.Alignment {
+        isFullSize ? .center : .leading
+    }
 
     // MARK: - Initialization
 
-    init(with viewModel: CardViewModel) {
+    init(with viewModel: CardViewModel, isFullSize: Bool = false) {
         self.viewModel = viewModel
+        self.isFullSize = isFullSize
         super.init(frame: .zero)
         setupView()
         setupContraints()
@@ -58,17 +78,20 @@ final class CardView: UIView {
     
     private func setupView() {
         translatesAutoresizingMaskIntoConstraints = false
-        layer.cornerRadius = 16
-        backgroundColor = .lightSkyBlue
         viewModel.set(avatarImage)
+        if !isFullSize {
+            backgroundColor = .lightSkyBlue
+            layer.cornerRadius = cornerRadius
+        }
     }
     
     private func setupContraints() {
         addSubview(stackView)
         
+        let avatarImgSize = isFullSize ? Space.base50 : Space.base30
         NSLayoutConstraint.activate([
-            avatarImage.heightAnchor.constraint(equalToConstant: Space.base30),
-            avatarImage.widthAnchor.constraint(equalToConstant: Space.base30)
+            avatarImage.heightAnchor.constraint(equalToConstant: avatarImgSize),
+            avatarImage.widthAnchor.constraint(equalToConstant: avatarImgSize)
         ])
         
         NSLayoutConstraint.activate([

@@ -5,6 +5,7 @@ enum RequestError: Error {
     case noResponse
     case noData
     case noURL
+    case lostReference
 }
 
 protocol APIClientProtocol {
@@ -34,7 +35,7 @@ final class APIClient: APIClientProtocol {
         return request as URLRequest
     }
     
-    // MARK: - Public Methods
+    // MARK: - Methods
     
     func request(endpoint: EndpointProtocol, completion: @escaping (Result<Data, Error>) -> Void) {
         guard let request = makeRequest(endpoint) else {

@@ -12,3 +12,4 @@
 
 // MARK: - Matches
 "Users.Navigation.title" = "Usuários";
+"UserDetails.Navigation.title" = "Repositórios";

@@ -42,16 +42,35 @@ final class UsersViewModel {
 }
 
 extension UsersViewModel: UsersViewModelProtocol {
-    // MARK: - Public Methods
+    // MARK: - Methods
     
     func openDetails(of user: UserModel) {
         coordinator.goTo(user)
     }
     
     func loadUsers(with username: String? = nil, completion: @escaping (Result<[CardViewModel], Error>) -> Void) {
-        let endpoint: UsersEndpoint = userEndpoint(with: username)
+        guard let username = username else {
+            loadUsers(completion: completion)
+            return
+        }
         
-        service.fetchUserList(endpoint: endpoint) { [unowned self] result in
+        loadUser(with: username, completion: completion)
+    }
+    
+    private func loadUser(with username: String, completion: @escaping (Result<[CardViewModel], Error>) -> Void) {
+        service.fetchUser(username) { [unowned self] result in
+            switch result {
+            case .success(let user):
+                let cellViewModels = createCellViewModels(models: [user])
+                completion(.success(cellViewModels))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    private func loadUsers(completion: @escaping (Result<[CardViewModel], Error>) -> Void) {
+        service.fetchUserList { [unowned self] result in
             switch result {
             case .success(let users):
                 let cellViewModels = createCellViewModels(models: users)
@@ -60,15 +79,6 @@ extension UsersViewModel: UsersViewModelProtocol {
                 completion(.failure(error))
             }
         }
-    }
-    
-    // MARK: - Private Methods
-    
-    private func userEndpoint(with username: String?) -> UsersEndpoint {
-        guard let username = username else {
-            return .users
-        }
-        return .user(username)
     }
 }
 

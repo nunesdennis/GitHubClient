@@ -22,7 +22,7 @@ final class CardViewModel {
         self.user = user
     }
     
-    // MARK: - Public Methods
+    // MARK: - Methods
     
     func set(_ imageView: UIImageView) {
         ImageFetcher.shared.fetchImage(fromPhotoURL: user.avatarUrl,

@@ -5,22 +5,25 @@ protocol UserDetailsViewControllerProtocol where Self: UIViewController {}
 final class UserDetailsViewController: BaseViewController {
     // MARK: - Constants
     
-    let cellRowHeight: CGFloat = 68
+    let cornerRadius: CGFloat = 16
     
     // MARK: - Subviews
+    
+    private lazy var userView: CardView = {
+        let viewModel = CardViewModel(user: viewModel.user)
+        return CardView(with: viewModel, isFullSize: true)
+    }()
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.dataSource = self
-        tableView.delegate = self
-        tableView.rowHeight = cellRowHeight
-//        tableView.register(UserCell.self, forCellReuseIdentifier: String(describing: UserCell.self))
+        tableView.allowsSelection = false
         tableView.backgroundView = spinner
         tableView.backgroundColor = .clear
-        tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         tableView.refreshControl = UIRefreshControl()
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
         tableView.refreshControl?.tintColor = .white
         tableView.refreshControl?.addTarget(self, action: #selector(pulledToRefresh), for: .valueChanged)
         
@@ -34,6 +37,7 @@ final class UserDetailsViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: UserDetailsViewModelProtocol
+    var repositoryList: [RepositoryModel] = []
     
     // MARK: - Initialization
     
@@ -52,7 +56,7 @@ final class UserDetailsViewController: BaseViewController {
         view.backgroundColor = .paleTurquoise
         setupLargeCentralSpinner()
         setupConstraints()
-        loadRepositories(from: viewModel.username)
+        loadRepositoryList(from: viewModel.username)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,45 +67,53 @@ final class UserDetailsViewController: BaseViewController {
     // MARK: - Private Methods
     
     private func setupConstraints() {
+        view.addSubview(userView)
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+            userView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Space.base08),
+            userView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            userView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        ])
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: userView.bottomAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Space.base04),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Space.base04),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
     private func setupNavigation() {
         title = viewModel.navigationTitle
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.prefersLargeTitles = false
     }
     
-    private func loadRepositories(from username: String) {
+    private func loadRepositoryList(from username: String) {
         isLoading = true
-//        viewModel.loadUsers(with: username) { [unowned self] result in
-//            switch result {
-//            case .success(let cardViewModelList):
-//                cardsViewModel = cardViewModelList
-//                DispatchQueue.main.async { [unowned self] in
-//                    tableView.refreshControl?.endRefreshing()
-//                    tableView.reloadData()
-//                    spinner.stopAnimating()
-//                    isLoading = false
-//                }
-//            case .failure(let error):
-//                isLoading = false
-//                showAlert(with: viewModel.errorAlertTitle,
-//                          message: error.localizedDescription,
-//                          andButtonTitle: viewModel.okButtonTitle)
-//            }
-//        }
+        viewModel.loadRepositories(from: username) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .success(let repositoryList):
+                DispatchQueue.main.async {
+                    self.repositoryList = repositoryList
+                    self.tableView.refreshControl?.endRefreshing()
+                    self.tableView.reloadData()
+                    self.spinner.stopAnimating()
+                    self.isLoading = false
+                }
+            case .failure(let error):
+                self.isLoading = false
+                self.showAlert(with: self.viewModel.errorAlertTitle,
+                               message: error.localizedDescription,
+                               andButtonTitle: self.viewModel.okButtonTitle)
+            }
+        }
     }
     
     @objc
     private func pulledToRefresh() {
-        loadRepositories(from: viewModel.username)
+        loadRepositoryList(from: viewModel.username)
     }
 }
 
@@ -111,25 +123,19 @@ extension UserDetailsViewController: UserDetailsViewControllerProtocol {}
 
 extension UserDetailsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        repositoryList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UserCell.self), for: indexPath) as? UserCell else {
-//            return UITableViewCell()
-//        }
-//
-//        let cardViewModel = cardsViewModel[indexPath.row]
-//        cell.setupView(with: cardViewModel)
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath)
+        let repository = repositoryList[indexPath.row]
+        cell.textLabel?.numberOfLines = 0
+        if let description = repository.description {
+            cell.textLabel?.text = description
+        } else {
+            cell.textLabel?.text = repository.name
+        }
         
-        return UITableViewCell()
-    }
-}
-
-extension UserDetailsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let cardViewModel = cardsViewModel[indexPath.row]
-//        let username = cardViewModel.getUsername()
-//        viewModel.openDetails(of: match)
+        return cell
     }
 }
