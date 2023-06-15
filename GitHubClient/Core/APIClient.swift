@@ -1,13 +1,5 @@
 import Foundation
 
-enum RequestError: Error {
-    case api(error: Error)
-    case noResponse
-    case noData
-    case noURL
-    case lostReference
-}
-
 protocol APIClientProtocol {
     func request(endpoint: EndpointProtocol, completion: @escaping (Result<Data, Error>) -> Void)
 }

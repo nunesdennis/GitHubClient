@@ -91,7 +91,7 @@ final class UserDetailsViewController: BaseViewController {
     
     private func loadRepositoryList(from username: String) {
         isLoading = true
-        viewModel.loadRepositories(from: username) { [weak self] result in
+        viewModel.loadRepositories(username: username) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let repositoryList):

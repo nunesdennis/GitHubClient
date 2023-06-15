@@ -6,7 +6,7 @@ protocol UserDetailsViewModelProtocol {
     var okButtonTitle: String { get }
     var errorAlertTitle: String { get }
     var navigationTitle: String { get }
-    func loadRepositories(from username: String, completion: @escaping (Result<[RepositoryModel], Error>) -> Void)
+    func loadRepositories(username: String, completion: @escaping (Result<[RepositoryModel], Error>) -> Void)
 }
 
 final class UserDetailsViewModel {
@@ -43,8 +43,8 @@ final class UserDetailsViewModel {
 }
 
 extension UserDetailsViewModel: UserDetailsViewModelProtocol {
-    func loadRepositories(from username: String, completion: @escaping (Result<[RepositoryModel], Error>) -> Void) {
-        service.fetchRepositoryList(from: username) { result in
+    func loadRepositories(username: String, completion: @escaping (Result<[RepositoryModel], Error>) -> Void) {
+        service.fetchRepositoryList(username: username) { result in
             completion(result)
         }
     }

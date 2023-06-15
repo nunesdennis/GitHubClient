@@ -95,7 +95,7 @@ final class UsersViewController: BaseViewController {
     
     private func loadUsers(with username: String? = nil) {
         isLoading = true
-        viewModel.loadUsers(with: username) { [unowned self] result in
+        viewModel.loadUsers(username: username) { [unowned self] result in
             switch result {
             case .success(let cardViewModelList):
                 cardsViewModel = cardViewModelList

@@ -4,7 +4,7 @@ protocol UsersViewModelProtocol {
     var okButtonTitle: String { get }
     var errorAlertTitle: String { get }
     var navigationTitle: String { get }
-    func loadUsers(with username: String?, completion: @escaping (Result<[CardViewModel], Error>) -> Void)
+    func loadUsers(username: String?, completion: @escaping (Result<[CardViewModel], Error>) -> Void)
     func openDetails(of user: UserModel)
 }
 
@@ -48,7 +48,7 @@ extension UsersViewModel: UsersViewModelProtocol {
         coordinator.goTo(user)
     }
     
-    func loadUsers(with username: String? = nil, completion: @escaping (Result<[CardViewModel], Error>) -> Void) {
+    func loadUsers(username: String? = nil, completion: @escaping (Result<[CardViewModel], Error>) -> Void) {
         guard let username = username else {
             loadUsers(completion: completion)
             return
